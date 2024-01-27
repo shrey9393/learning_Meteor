@@ -1,6 +1,19 @@
 import { Meteor } from "meteor/meteor";
 import { LinksCollection } from "/imports/api/links";
 
+async function insertLink({ title, url }) {
+  await LinksCollection.insertAsync({ title, url, createdAt: new Date() });
+}
+
+Meteor.startup(async () => {
+  Meteor.publish("links", function () {
+    return LinksCollection.find();
+  });
+});
+
+// import { Meteor } from "meteor/meteor";
+// import { LinksCollection } from "/imports/api/links";
+
 Meteor.methods({
   "links.create": function ({ title, url }) {
     console.log("Creating link...", { title, url });

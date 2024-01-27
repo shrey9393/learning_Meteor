@@ -1,14 +1,18 @@
 import { Meteor } from "meteor/meteor";
 import React, { useState } from "react";
 import { useTracker } from "meteor/react-meteor-data";
+
+import { useFind, useSubscribe } from "meteor/react-meteor-data";
 import { LinksCollection } from "../api/links";
+// import { Mongo } from "meteor/mongo";
 
 export const Info = () => {
+  const isLoading = useSubscribe("links");
+  const links = useFind(() => LinksCollection.find());
   const [formTarget, setFormTarget] = useState(null);
   const [error, setError] = useState(null);
-  const links = useTracker(() => {
-    return LinksCollection.find().fetch();
-  });
+
+  console.log(links);
 
   const onSubmitted = () => {
     setFormTarget(null);
